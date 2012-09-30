@@ -13,16 +13,7 @@
 		<script src="/javascripts/lib/klass.js"></script>
 		<script src="/javascripts/socketConnection.js"></script>
 		<style>
-			#top {
-				height:100%;
-				width:100%;
-			}
-			#map {
-				height:100%;
-				width:100%;
-				border:1px solid #333;
-				margin-top:0.6em;
-			}
+
 		</style>
 		<script>
 			$(function() {
@@ -32,12 +23,17 @@
 	</head>
 	<body>
 		<div data-role="page" id="top">
-			<div class="info">
-				<fieldset data-role="fieldcontain" class="ui-hide-label">
+			<div class="info" data-role="header" data-position="fixed" class="ui-grid-b">
+				<div class="ui-block-a">
 					<label>名称：</label>
+				</div>
+				<div class="ui-block-b">
 					<input type="text" placeholder="地図に表示する名称" id="name"/>
 					<input type="hidden" value="<%= sessionID %>" id="accountId"/>
-				</fieldset>
+				</div>
+				<div class="ui-block-c">
+					<button data-mini="true">現在地</button>
+				</div>
 			</div>
 			<div id="map"></div>
 			<script src="/javascripts/mapView.js"></script>
