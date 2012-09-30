@@ -8,43 +8,65 @@
 				zoom : 15
 			});
 
+			this.positionStore = {};
+
+			this.socket = window.geoanno.SocketConnection.get();
+			var self = this;
+			this.socket.on('position', function(param){
+				self.drowPositionMarker.call(self, param);
+			});
+
+			this.nameText = this.$('#name');
+			this.accountId = this.$('#accountId');
+
+			this.searchCurrentPosition(true);
+			setInterval(function() {
+				self.searchCurrentPosition.call(self, false);
+			}, 5000);
+		},
+
+		searchCurrentPosition : function(init) {
 			var self = this;
 			if (navigator.geolocation) {
 				navigator.geolocation.getCurrentPosition(function(position) {
+					var location = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+					init && self.map.setCenter(location);
 
+					var param = {
+						'accountId' : self.accountId.val(),
+						'name' : self.nameText.val() || '*',
+						'position' : location
+					}
+
+					self.drowPositionMarker(param);
+					self.socket.emit('currentPosition', param);
 				}, function() {
 
 				});
 			}
-
-			var socket = window.geoanno.SocketConnection.get();
-			socket.on('position', function(data) {
-				console.log(data);
-			});
-			socket.emit('currentPosition', {
-				'test' : 'value'
-			});
-
 		},
 
-		makeMarker : function(param) {
-			var initialLocation = new google.maps.LatLng(param.position.coords.latitude, param.position.coords.longitude);
-			this.map.setCenter(initialLocation);
+		drowPositionMarker : function(param) {
+			this.deleteMarker(param);
+			this.createMarker(param);
+		},
 
+		deleteMarker : function(param) {
+			var currenctMarker = this.positionStore[param.accountId];
+			currenctMarker && currenctMarker.setMap(null);
+			delete this.positionStore[param.accountId];
+		},
+
+		createMarker : function(param) {
 			var marker = new google.maps.Marker({
-				position : initialLocation,
-				title : param.name
+				position : new google.maps.LatLng(param.position.Xa, param.position.Ya),
+				title : param.name,
+				icon : 'http://chart.apis.google.com/chart?chst=d_bubble_text_small_withshadow&chld=bb|' + param.name + '|7FFF00|000000'
 			});
 
-			// To add the marker to the map, call setMap();
+			this.positionStore[param.accountId] = marker;
+
 			marker.setMap(this.map);
-
-			var contentString = param.name;
-
-			var infowindow = new google.maps.InfoWindow({
-				content : contentString
-			});
-			infowindow.open(this.map, marker);
 		}
 	});
 })();
