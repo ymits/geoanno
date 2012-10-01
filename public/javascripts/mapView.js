@@ -15,8 +15,8 @@
 				}
 			});
 
-			var pageHeight = $(window).height() - 55;
-			this.$('#map').css("height", pageHeight);
+			this.setHeight();
+			$(window).bind('orientationchange', this.setHeight);
 
 			this.markerStore = {};
 
@@ -80,8 +80,12 @@
 		},
 
 		moveToCurrentPosition : function() {
-
 			this.searchCurrentPosition(true);
+		},
+		
+		setHeight : function(){
+			var pageHeight = $(window).height() - 55;
+			this.$('#map').css("height", pageHeight);
 		}
 	});
 })();
