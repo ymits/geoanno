@@ -8,14 +8,18 @@
 		initialize : function() {
 			this.map = new google.maps.Map(this.$('#map').get(0), {
 				mapTypeId : google.maps.MapTypeId.ROADMAP,
-				zoom : 15
+				zoom : 15,
+				navigationControl : true,
+				navigationControlOptions : {
+					style : google.maps.NavigationControlStyle.ANDROID
+				}
 			});
 
 			this.markerStore = {};
 
 			this.socket = window.geoanno.SocketConnection.get();
 			var self = this;
-			this.socket.on('position', function(param){
+			this.socket.on('position', function(param) {
 				self.drowPositionMarker.call(self, param);
 			});
 
@@ -71,7 +75,7 @@
 
 			marker.setMap(this.map);
 		},
-		
+
 		moveToCurrentPosition : function() {
 			this.searchCurrentPosition(true);
 		}
