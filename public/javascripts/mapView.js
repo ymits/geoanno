@@ -3,7 +3,7 @@
 	window.geoanno = window.geoanno || {};
 	window.geoanno.MapView = Backbone.View.extend({
 		events : {
-			"click [data-role=header]> .ui-block-c> button" : "moveToCurrentPosition"
+			"click [data-role=header]> .ui-block-c button" : "moveToCurrentPosition"
 		},
 		initialize : function() {
 			this.map = new google.maps.Map(this.$('#map').get(0), {
@@ -11,7 +11,7 @@
 				zoom : 15
 			});
 
-			this.positionStore = {};
+			this.markerStore = {};
 
 			this.socket = window.geoanno.SocketConnection.get();
 			var self = this;
@@ -55,9 +55,9 @@
 		},
 
 		deleteMarker : function(param) {
-			var currenctMarker = this.positionStore[param.accountId];
+			var currenctMarker = this.markerStore[param.accountId];
 			currenctMarker && currenctMarker.setMap(null);
-			delete this.positionStore[param.accountId];
+			delete this.markerStore[param.accountId];
 		},
 
 		createMarker : function(param) {
@@ -67,14 +67,13 @@
 				icon : 'http://chart.apis.google.com/chart?chst=d_bubble_icon_text_big_withshadow&chld=bicycle|edge_bc|' + param.name + '|7FFF00|000000'
 			});
 
-			this.positionStore[param.accountId] = marker;
+			this.markerStore[param.accountId] = marker;
 
 			marker.setMap(this.map);
 		},
 		
 		moveToCurrentPosition : function() {
-			var currentPosition = this.positionStore[this.accountId.val()];
-			currentPosition && this.map.setCenter(currentPosition.location);
+			this.searchCurrentPosition(true);
 		}
 	});
 })();
