@@ -16,7 +16,7 @@
 			});
 
 			this.setHeight();
-			$(window).bind('orientationchange', this.setHeight);
+			$(window).bind('resize', this.setHeight);
 
 			this.markerStore = {};
 
