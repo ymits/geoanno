@@ -31,5 +31,4 @@ body {
 }
 #top [data-role=header] > .ui-grid-b > .ui-block-c {
 	margin-top: 11px;
-	max-width:100px;
 }

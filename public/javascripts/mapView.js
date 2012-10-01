@@ -3,7 +3,7 @@
 	window.geoanno = window.geoanno || {};
 	window.geoanno.MapView = Backbone.View.extend({
 		events : {
-			"click [data-role=header]> .ui-block-c button" : "moveToCurrentPosition"
+			"click [data-role=header]> .ui-grid-b > .ui-block-c button" : "moveToCurrentPosition"
 		},
 		initialize : function() {
 			this.map = new google.maps.Map(this.$('#map').get(0), {
