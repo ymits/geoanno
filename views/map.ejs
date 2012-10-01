@@ -14,7 +14,6 @@
 		<script src="/javascripts/lib/klass.js"></script>
 		<script src="/javascripts/socketConnection.js"></script>
 		<style>
-
 		</style>
 		<script>
 			$(function() {
@@ -24,16 +23,20 @@
 	</head>
 	<body>
 		<div data-role="page" id="top">
-			<div class="info" data-role="header" data-position="fixed" class="ui-grid-b">
-				<div class="ui-block-a">
-					<label>名称：</label>
-				</div>
-				<div class="ui-block-b">
-					<input type="text" placeholder="地図に表示する名称" id="name"/>
-					<input type="hidden" value="<%= sessionID %>" id="accountId"/>
-				</div>
-				<div class="ui-block-c">
-					<button data-mini="true">現在地</button>
+			<div class="info" data-role="header" data-position="fixed">
+				<div class="ui-grid-b">
+					<div class="ui-block-a">
+						<label>名称：</label>
+					</div>
+					<div class="ui-block-b">
+						<input type="text" placeholder="地図に表示する名称" id="name"/>
+						<input type="hidden" value="<%= sessionID %>" id="accountId"/>
+					</div>
+					<div class="ui-block-c">
+						<button data-mini="true">
+							現在地
+						</button>
+					</div>
 				</div>
 			</div>
 			<div id="map"></div>
