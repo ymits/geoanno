@@ -12,23 +12,21 @@ body {
 #top {
 	height: 100%;
 }
-#map {
+#top #map {
 	height: 100%;
 	border: 1px solid #333;
 }
-#top [data-role=header] {
+#top .info {
 	width: 100%;
-}
-#top [data-role=header] > div {
 	height: 55px;
 }
-#top [data-role=header] > .ui-grid-b > .ui-block-a {
+#top .info > .ui-grid-b > .ui-block-a {
 	line-height: 55px;
 	max-width:55px;
 }
-#top [data-role=header] > .ui-grid-b > .ui-block-b {
+#top .info > .ui-grid-b > .ui-block-b {
 	/*width:100%;*/
 }
-#top [data-role=header] > .ui-grid-b > .ui-block-c {
+#top .info > .ui-grid-b > .ui-block-c {
 	margin-top: 11px;
 }
