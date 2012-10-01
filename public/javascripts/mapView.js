@@ -15,6 +15,9 @@
 				}
 			});
 
+			var pageHeight = $(window).height() - 55;
+			this.$('#map').css("height", pageHeight);
+
 			this.markerStore = {};
 
 			this.socket = window.geoanno.SocketConnection.get();
@@ -77,6 +80,7 @@
 		},
 
 		moveToCurrentPosition : function() {
+
 			this.searchCurrentPosition(true);
 		}
 	});
