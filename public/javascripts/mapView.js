@@ -23,7 +23,6 @@
 			this.socket = window.geoanno.SocketConnection.get();
 			var self = this;
 			this.socket.on('position', function(param) {
-				self.$('.info> .ui-grid-b > .ui-block-c .ui-btn-text').text(param.name);
 				self.drowPositionMarker.call(self, param);
 			});
 
