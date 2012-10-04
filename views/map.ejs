@@ -13,12 +13,11 @@
 		<script src="/socket.io/socket.io.js"></script>
 		<script src="/javascripts/lib/klass.js"></script>
 		<script src="/javascripts/socketConnection.js"></script>
-		<style>
-		</style>
+		<style></style>
 		<script>
-			$(function() {
-				window.geoanno.SocketConnection.connect();
-			})
+            $(function() {
+                window.geoanno.SocketConnection.connect();
+            })
 		</script>
 	</head>
 	<body>
@@ -41,14 +40,16 @@
 			</div>
 			<div id="map"></div>
 			<script src="/javascripts/lineData.js"></script>
+			<script src="/javascripts/routeData.js"></script>
+			<script src="/javascripts/elevationData.js"></script>
 			<script src="/javascripts/mapView.js"></script>
 			<script>
-				$(function() {
-					var param = {
-						'el' : $('#top')
-					};
-					new window.geoanno.MapView(param);
-				})
+                $(function() {
+                    var param = {
+                        'el' : $('#top')
+                    };
+                    new window.geoanno.MapView(param);
+                })
 			</script>
 		</div>
 	</body>
