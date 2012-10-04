@@ -1,10 +1,10 @@
 (function() {
     'use strict';
     window.geoanno = window.geoanno || {};
-    window.geoanno.ElevationChart = window.geoanno.CanvasObject.extend(function() {
-    	this.elevationLine = new window.geoanno.ElevationLine();
+    window.geoanno.ElevationChart = window.geoanno.CanvasObject.extend(function(elevationLine, currentPosition) {
+    	this.elevationLine = elevationLine;
     	
-    	this.currentPosition = new window.geoanno.CurrentPosition();
+    	this.currentPosition = currentPosition;
     }).methods({
     
     });
