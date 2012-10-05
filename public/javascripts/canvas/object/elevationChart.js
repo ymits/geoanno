@@ -2,8 +2,10 @@
     window.geoanno = window.geoanno || {};
     window.geoanno.ElevationChart = window.geoanno.CanvasObject.extend(function(param) {
         this.elevationLine = new window.geoanno.ElevationLine({
-        	width: param.width,
-        	height: param.height,
+        	top: 1,
+        	left: 1,
+        	width: param.width-2,
+        	height: param.height-2,
         	elevationList : param.elevationList,
         	currentIndex : param.currentIndex
         });

@@ -22,6 +22,7 @@
         render : function(ctx2d, canvasObject) {
             for (var i in this.renderList) {
             	if(canvasObject instanceof this.renderList[i].class){
+            		ctx2d.translate(canvasObject.top, canvasObject.left);
             		this.renderList[i].render.drow(ctx2d, canvasObject);
             	}
             }

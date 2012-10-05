@@ -2,6 +2,8 @@
     'use strict';
     window.geoanno = window.geoanno || {};
     window.geoanno.CanvasObject = window.klass(function(param) {
+    	this.top = param.top;
+    	this.left = param.left;
     	this.width = param.width;
     	this.height = param.height;
     	

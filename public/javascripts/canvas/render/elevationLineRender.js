@@ -20,8 +20,13 @@
         		ctx2d.lineTo(x, y);
         	}
         	ctx2d.lineTo(canvasObject.width, canvasObject.height);
-        	ctx2d.closePath();
         	ctx2d.fillStyle = 'rgba(192, 80, 77, 0.5)'; // 赤
+        	ctx2d.stroke();
+        	ctx2d.closePath();
+        	var grad = ctx2d.createLinearGradient(0,0, 0,canvasObject.height);
+        	grad.addColorStop(0,'rgba(192, 80, 77, 0.5)');
+        	grad.addColorStop(1,'rgb(255, 255, 255)');
+        	ctx2d.fillStyle = grad;
         	ctx2d.fill();
         },
         
