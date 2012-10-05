@@ -5,5 +5,9 @@
 
     }).methods({
     
+        renderObject : function(ctx2d, canvasObject) {
+        	ctx2d.beginPath();
+        	ctx2d.strokeRect(0, 0, canvasObject.width, canvasObject.height);
+        }
     });
 })();

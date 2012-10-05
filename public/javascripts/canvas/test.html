@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+<script src="../lib/klass.js"></script>
+<script src="object/canvasObject.js"></script>
+<script src="object/elevationLine.js"></script>
+<script src="object/elevationChart.js"></script>
+<script src="render/canvasRender.js"></script>
+<script src="render/elevationLineRender.js"></script>
+<script src="render/elevationChartRender.js"></script>
+<script src="canvasEngine.js"></script>
+<script>
+	$(function(){
+		var list = [];
+		for(var i = 0; i<20; i++){
+			list.push(i*10);
+		}
+		
+		var canvas = $("canvas").get(0);
+		var ctx2d = canvas.getContext('2d');
+		var elevationChart = new window.geoanno.ElevationChart({
+            width : canvas.width,
+            height : canvas.height,
+            elevationList : list,
+            currentIndex : 5
+        });
+		
+		var chartEngine = window.geoanno.CanvasEngineHolder.get();
+		chartEngine.render(ctx2d , elevationChart);
+	});
+</script>
+</head>
+<body>
+<canvas style="width:300px;height:200px"></canvas>
+</body>
+</html>
