@@ -51,6 +51,7 @@
                     };
 
                     self.drowPositionMarker(param);
+                    self.updateJirodeElevation(param);
                     self.socket.emit('currentPosition', param);
                 }, function() {
 
@@ -88,11 +89,16 @@
         },
 
         setHeight : function() {
-            var pageHeight = $(window).height() - 55;
+            var pageHeight = $(window).height() - 155;
             this.$('#map').css("height", pageHeight);
         },
 
         drowJirodeLine : function() {
+            this.drowJirodeRoute();
+            this.drowJirodeElevation();
+        },
+        
+        drowJirodeRoute : function(){
             var flightPath = new google.maps.Polyline({
                 path : window.geoanno.routeData,
                 strokeColor : "#FF0000",
@@ -100,6 +106,47 @@
                 strokeWeight : 6
             });
             flightPath.setMap(this.map);
+        },
+        
+        drowJirodeElevation : function(){
+            this.canvas = this.$('#canvasArea').get(0);
+            var ctx2d = this.canvas.getContext('2d');
+            this.elevationChart = new window.geoanno.ElevationChart({
+                width : this.canvas.width,
+                height : this.canvas.height,
+                elevationList : window.geoanno.elevationData,
+                currentIndex : 0
+            });
+            
+            var chartEngine = window.geoanno.CanvasEngineHolder.get();
+            chartEngine.render(ctx2d , this.elevationChart);
+        },
+        
+        updateJirodeElevation : function(param){
+            this.currentIndex = this.currentIndex || 0;
+            this.currentIndex = this.getCurrentIndex(param);
+            this.elevationChart.updateCurrentIndex(this.currentIndex);
+            
+            var ctx2d = this.canvas.getContext('2d');
+            var chartEngine = window.geoanno.CanvasEngineHolder.get();
+            chartEngine.render(ctx2d , this.elevationChart);
+        },
+        
+        getCurrentIndex : function(param){
+            var diff = this.getDiff(param.position, window.geoanno.routeData[this.currentIndex]);
+            for(var i = this.currentIndex + 1; i < window.geoanno.routeData.length; i++){
+                var nextDiff = this.getDiff(param.position, window.geoanno.routeData[i]);
+                if(nextDiff > diff){
+                    return i - 1;
+                } else {
+                    diff = nextDiff;
+                }
+            }
+            return window.geoanno.routeData.length;
+        },
+        
+        getDiff: function(currentPosition, routeData){
+            return Math.abs(currentPosition.Xa - routeData.Xa) + Math.abs(currentPosition.Ya - routeData.Ya)
         }
     });
 })();

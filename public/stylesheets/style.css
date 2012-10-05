@@ -9,6 +9,10 @@ html {
 body {
 	height: 100%
 }
+#canvasArea {
+	width: 100%;
+	height: 100px;
+}
 #top {
 	height: 100%;
 }

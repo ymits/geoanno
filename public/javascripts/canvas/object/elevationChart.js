@@ -11,5 +11,8 @@
         });
     }).methods({
 
+        updateCurrentIndex : function(index){
+            this.elevationLine.currentIndex = index;
+        }
     });
 })(); 
