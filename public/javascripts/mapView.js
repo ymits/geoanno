@@ -133,20 +133,20 @@
         },
         
         getCurrentIndex : function(param){
+            var index = this.currentIndex;
             var diff = this.getDiff(param.position, window.geoanno.routeData[this.currentIndex]);
             for(var i = this.currentIndex + 1; i < window.geoanno.routeData.length; i++){
                 var nextDiff = this.getDiff(param.position, window.geoanno.routeData[i]);
-                if(nextDiff > diff){
-                    return i - 1;
-                } else {
+                if(nextDiff < diff){
                     diff = nextDiff;
+                    index = i;
                 }
             }
-            return window.geoanno.routeData.length;
+            return index;
         },
         
         getDiff: function(currentPosition, routeData){
-            return Math.abs(currentPosition.Xa - routeData.Xa) + Math.abs(currentPosition.Ya - routeData.Ya)
+            return Math.abs(currentPosition.Xa - routeData.Xa) + Math.abs(currentPosition.Ya - routeData.Ya);
         }
     });
 })();
