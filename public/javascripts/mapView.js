@@ -6,7 +6,11 @@
             "click .info> .ui-grid-c > .ui-block-c button" : "moveToCurrentPosition",
             "click .info> .ui-grid-c > .ui-block-d button" : "update",
             "keydown .info> .ui-grid-c > .ui-block-a input" : "keydown",
-            "click #memberList tr" : "selectMember"
+            "click #memberList tr" : "selectMember",
+            "touchstart #memberList tr" : "onTouch",
+            "mousedown #memberList tr" : "onTouch",
+            "touchend #memberList tr" : "onTouchEnd",
+            "mouseup #memberList tr" : "onTouchEnd",
         },
         initialize : function() {
             this.map = new google.maps.Map(this.$('#map').get(0), {
@@ -152,6 +156,16 @@
         selectMember : function(evt) {
           var param = $(evt.currentTarget).data('param');
           this.setCenter(param);
+        },
+        
+        onTouch : function(evt){
+          var $target = $(evt.currentTarget);
+          $target.addClass('selected');
+        },
+        
+        onTouchEnd : function(evt){
+          var $target = $(evt.currentTarget);
+          $target.removeClass('selected');
         },
 
         setHeight : function() {

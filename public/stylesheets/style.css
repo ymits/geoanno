@@ -56,6 +56,9 @@ body {
 #memberList tr:nth-child(odd) {
      background-color:#F0F0F6;
 }
+#memberList tr.selected {
+     background-color:#e0e0e6;
+}
 
 #memberList tr td {
     padding: 10px;
