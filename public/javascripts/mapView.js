@@ -3,7 +3,10 @@
     window.geoanno = window.geoanno || {};
     window.geoanno.MapView = Backbone.View.extend({
         events : {
-            "click .info> .ui-grid-b > .ui-block-c button" : "moveToCurrentPosition"
+            "click .info> .ui-grid-c > .ui-block-c button" : "moveToCurrentPosition",
+            "click .info> .ui-grid-c > .ui-block-d button" : "update",
+            "keydown .info> .ui-grid-c > .ui-block-a input" : "keydown",
+            "click #memberList tr" : "selectMember"
         },
         initialize : function() {
             this.map = new google.maps.Map(this.$('#map').get(0), {
@@ -19,44 +22,94 @@
             $(window).bind('resize', this.setHeight);
 
             this.markerStore = {};
-
-            this.socket = window.geoanno.SocketConnection.get();
-            var self = this;
-            this.socket.on('position', function(param) {
-                self.drowPositionMarker.call(self, param);
-            });
+            this.memberParams = [];
+            this.selfParam = {};
 
             this.nameText = this.$('#name');
             this.accountId = this.$('#accountId');
 
             this.searchCurrentPosition(true);
-            setInterval(function() {
-                self.searchCurrentPosition.call(self, false);
-            }, 10000);
+            this.startPositionUpdate();
 
             this.drowJirodeLine();
+            this.getMembers();
+        },
+        
+        startPositionUpdate : function(){
+          var self = this;
+          this.searchCurrentPosition(false, function(){
+            setTimeout(function(){
+              self.startPositionUpdate.call(self);
+              self.getMembers();
+            }, 10*1000);
+          });
         },
 
-        searchCurrentPosition : function(init) {
+        searchCurrentPosition : function(init, callback) {
             var self = this;
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(function(position) {
-                    var location = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-                    init && self.map.setCenter(location);
-
-                    var param = {
+                    
+                    self.selfParam = {
                         'accountId' : self.accountId.val(),
                         'name' : self.nameText.val() || '*',
-                        'position' : location
+                        'position' : {
+                          latitude:position.coords.latitude,
+                          longitude:position.coords.longitude
+                        },
+                        updateTime:new Date().getTime()
                     };
 
-                    self.drowPositionMarker(param);
-                    self.updateJirodeElevation(param);
-                    self.socket.emit('currentPosition', param);
+                    init && self.setCenter(self.selfParam);
+                    self.drowPositionMarker(self.selfParam);
+                    self.updateJirodeElevation(self.selfParam);
+                    
+                    $.post('/currentPosition', self.selfParam, 'json');
+                    
+                    callback && callback();
                 }, function() {
 
-                });
+                }, {enableHighAccuracy: true, timeout:6000});
             }
+        },
+        
+        keydown : function(){
+          this.searchCurrentPosition(false);
+        },
+        
+        update : function(){
+          this.searchCurrentPosition(true);
+          this.getMembers();
+        },
+        
+        getMembers : function(){
+          var self = this;
+          $.post('/getMembers', function(data){
+            self.memberParams = [];
+            for(var i in data){
+              self.memberParams.push(data[i]);
+            }
+            self.drawMemberList();
+          }, 'json')
+        },
+        
+        drawMemberList:function(){
+          $('#memberList').find('tr').remove();
+          for(var i in this.memberParams){
+            var member = this.memberParams[i];
+            var $member = $('<tr class="member">');
+            $member.append($('<td class="name">'+member.name+'</td>'));
+            var time = new Date(Number(member.updateTime));
+            $member.append($('<td class="updateTime">('+time.getHours()+':'+time.getMinutes()+')</td>'));
+            $member.data('param', member);
+            $('#memberList').append($member);
+            this.drowPositionMarker(member);
+          }
+        },
+        
+        setCenter : function(param){
+          var location = new google.maps.LatLng(param.position.latitude, param.position.longitude);
+          this.map.setCenter(location);
         },
 
         drowPositionMarker : function(param) {
@@ -74,18 +127,22 @@
             var markerImage = new google.maps.MarkerImage('/images/marker.png', new google.maps.Size(20, 20), new google.maps.Point(0, 0), new google.maps.Point(10, 10));
 
             var marker = new google.maps.Marker({
-                position : new google.maps.LatLng(param.position.Xa, param.position.Ya),
+                position : new google.maps.LatLng(param.position.latitude, param.position.longitude),
                 title : param.name,
                 icon : 'http://chart.apis.google.com/chart?chst=d_bubble_icon_text_big&chld=bicycle|edge_bc|' + param.name + '|7FFF00|000000',
-                shadow : markerImage
+                shadow : markerImage,
+                map:this.map
             });
             this.markerStore[param.accountId] = marker;
-
-            marker.setMap(this.map);
         },
 
         moveToCurrentPosition : function() {
-            this.searchCurrentPosition(true);
+            this.setCenter(this.selfParam);
+        },
+        
+        selectMember : function(evt) {
+          var param = $(evt.currentTarget).data('param');
+          this.setCenter(param);
         },
 
         setHeight : function() {
@@ -146,7 +203,7 @@
         },
         
         getDiff: function(currentPosition, routeData){
-            return Math.abs(currentPosition.Xa - routeData.Xa) + Math.abs(currentPosition.Ya - routeData.Ya);
+            return Math.abs(currentPosition.latitude - routeData.lb) + Math.abs(currentPosition.longitude - routeData.mb);
         }
     });
 })();

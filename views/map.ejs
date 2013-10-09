@@ -10,36 +10,29 @@
 		<script src="http://cdnjs.cloudflare.com/ajax/libs/backbone.js/0.9.2/backbone-min.js"></script>
 		<script src="http://code.jquery.com/mobile/1.1.1/jquery.mobile-1.1.1.min.js"></script>
 		<script src="http://maps.googleapis.com/maps/api/js?sensor=true"></script>
-		<script src="/socket.io/socket.io.js"></script>
 		<script src="/javascripts/lib/klass.js"></script>
-		<script src="/javascripts/socketConnection.js"></script>
-		<style></style>
-		<script>
-            $(function() {
-                window.geoanno.SocketConnection.connect();
-            })
-		</script>
 	</head>
 	<body>
 		<div data-role="page" id="top">
 			<div class="info" data-role="header" data-position="fixed">
-				<div class="ui-grid-b">
+				<div class="ui-grid-c">
 					<div class="ui-block-a">
-						<label>名称：</label>
-					</div>
-					<div class="ui-block-b">
 						<input type="text" placeholder="地図に表示する名称" id="name"/>
 						<input type="hidden" value="<%= sessionID %>" id="accountId"/>
 					</div>
 					<div class="ui-block-c">
-						<button data-mini="true">
-							現在地
-						</button>
+						<button data-mini="true">現在地</button>
 					</div>
+					<div class="ui-block-d">
+            <button data-mini="true">更新</button>
+          </div>
 				</div>
 			</div>
-			<div id="map"></div>
-			<canvas id="canvasArea"></canvas>
+			<div id="contents">
+  			<div id="map"></div>
+  			<canvas id="canvasArea"></canvas>
+  			<table id="memberList"></table>
+			</div>
 			<script src="/javascripts/lineData.js"></script>
 			<script src="/javascripts/routeData.js"></script>
 			<script src="/javascripts/elevationData.js"></script>

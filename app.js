@@ -31,6 +31,22 @@ app.configure('development', function() {
 
 app.get('/', routes.index);
 app.get('/users', user.list);
+var positionStore = {};
+var timerStore = {};
+var updateStoreTime = function(param){
+  clearTimeout(timerStore[param.accountId]);
+  timerStore[param.accountId] = setTimeout(function(){
+    delete positionStore[param.accountId];
+  }, 30*60*1000);
+}
+app.post('/currentPosition', function(req, res){
+  positionStore[req.body.accountId] = req.body;
+  updateStoreTime(req.body);
+  res.json({});
+});
+app.post('/getMembers', function(req, res){
+  res.json(positionStore);
+});
 
 io.sockets.on('connection', function(socket) {
 	socket.on('currentPosition', function(data) {

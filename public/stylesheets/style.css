@@ -24,13 +24,40 @@ body {
 	width: 100%;
 	height: 55px;
 }
-#top .info > .ui-grid-b > .ui-block-a {
-	line-height: 55px;
-	max-width:55px;
+#top .info > .ui-grid-c > .ui-block-a {
+	width:50%;
 }
-#top .info > .ui-grid-b > .ui-block-b {
-	/*width:100%;*/
+#top .info > .ui-grid-c > .ui-block-b {
+	width:35%;
 }
-#top .info > .ui-grid-b > .ui-block-c {
+#top .info > .ui-grid-c > .ui-block-c {
 	margin-top: 11px;
+}
+#top .info > .ui-grid-c > .ui-block-d {
+    margin-top: 11px;
+}
+
+#contents {
+    position:relative;
+}
+
+#memberList {
+    position:absolute;
+    top:10px; 
+    right:10px;
+    
+    border-collapse:collapse; 
+    border-spacing:0;
+}
+
+#memberList tr:nth-child(even) {
+    background-color:#FCFCFC;
+}
+#memberList tr:nth-child(odd) {
+     background-color:#F0F0F6;
+}
+
+#memberList tr td {
+    padding: 10px;
+    border-top: 1px solid #dddddd;
 }
