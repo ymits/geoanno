@@ -39,6 +39,7 @@
           var self = this;
           this.searchCurrentPosition(false, function(){
             setTimeout(function(){
+              self.deleteAllMarker();
               self.startPositionUpdate.call(self);
               self.getMembers();
             }, 10*1000);
@@ -121,6 +122,14 @@
             var currenctMarker = this.markerStore[param.accountId];
             currenctMarker && currenctMarker.setMap(null);
             delete this.markerStore[param.accountId];
+        },
+        
+        deleteAllMarker : function() {
+          for(var i in this.markerStore){
+            var currenctMarker = this.markerStore[i];
+            currenctMarker && currenctMarker.setMap(null);
+            delete this.markerStore[i];
+          }
         },
 
         createMarker : function(param) {
