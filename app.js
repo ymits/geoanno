@@ -30,26 +30,7 @@ app.configure('development', function() {
 
 app.get('/', routes.index);
 app.get('/users', user.list);
-var positionStore = {
-  a:{
-    accountId:'aaa',
-    name:'testAccount-A',
-    position:{
-      latitude: 35.671651,
-      longitude: 139.772861
-    },
-    updateTime: 1411719531129
-  },
-  b:{
-    accountId:'bbb',
-    name:'testAccount-B',
-    position:{
-      latitude: 35.669651,
-      longitude: 139.770861
-    },
-    updateTime: 1411719531129
-  }
-};
+var positionStore = {};
 var timerStore = {};
 /** 
  * @param {Object} param
@@ -75,7 +56,7 @@ var updateStoreTime = function(param){
   clearTimeout(timerStore[param.accountId]);
   timerStore[param.accountId] = setTimeout(function(){
     delete positionStore[param.accountId];
-  }, 30*60*1000);
+  }, 60*60*1000);
 }
 app.post('/currentPosition', function(req, res){
   positionStore[req.body.accountId] = req.body;
