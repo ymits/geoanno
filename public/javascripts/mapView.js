@@ -41,7 +41,7 @@
                     
                     self.selfParam = {
                         'accountId' : '*',
-                        'name' : '現在地',
+                        'name' : '現在地 ',
                         'position' : {
                           latitude:position.coords.latitude,
                           longitude:position.coords.longitude
