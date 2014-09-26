@@ -22,7 +22,7 @@ body {
 }
 #top .info {
 	width: 100%;
-	height: 55px;
+	padding:2px;
 }
 #top .info > .ui-grid-c > .ui-block-a {
 	width:50%;

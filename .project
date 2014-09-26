@@ -6,11 +6,12 @@
 	</projects>
 	<buildSpec>
 		<buildCommand>
-			<name>com.eclipsesource.jshint.ui.builder</name>
+			<name>com.aptana.ide.core.unifiedBuilder</name>
 			<arguments>
 			</arguments>
 		</buildCommand>
 	</buildSpec>
 	<natures>
+		<nature>com.aptana.projects.webnature</nature>
 	</natures>
 </projectDescription>

@@ -9,7 +9,6 @@ var http = require('http');
 var path = require('path');
 var app = express();
 var server = http.createServer(app);
-var io = require('socket.io').listen(server);
 
 app.configure(function() {
 	app.set('port', process.env.PORT || 3000);
@@ -31,8 +30,47 @@ app.configure('development', function() {
 
 app.get('/', routes.index);
 app.get('/users', user.list);
-var positionStore = {};
+var positionStore = {
+  a:{
+    accountId:'aaa',
+    name:'testAccount-A',
+    position:{
+      latitude: 35.671651,
+      longitude: 139.772861
+    },
+    updateTime: 1411719531129
+  },
+  b:{
+    accountId:'bbb',
+    name:'testAccount-B',
+    position:{
+      latitude: 35.669651,
+      longitude: 139.770861
+    },
+    updateTime: 1411719531129
+  }
+};
 var timerStore = {};
+/** 
+ * @param {Object} param
+ *   @param {String} param.accountId
+ *   @param {String} param.name
+ *   @param {Object} param.position
+ *     @param {Number} param.position.latitude
+ *     @param {Number} param.position.longitude
+ *   @param {Number} param.updateTime
+ * 
+ * 例)
+ * {
+ *   accountId:'XXXX',
+ *   name:'*',
+ *   position:{
+ *     latitude: 35.670651,
+ *     longitude: 139.771861
+ *   },
+ *   updateTime: 1411719531129
+ * }
+ */
 var updateStoreTime = function(param){
   clearTimeout(timerStore[param.accountId]);
   timerStore[param.accountId] = setTimeout(function(){
@@ -46,12 +84,6 @@ app.post('/currentPosition', function(req, res){
 });
 app.post('/getMembers', function(req, res){
   res.json(positionStore);
-});
-
-io.sockets.on('connection', function(socket) {
-	socket.on('currentPosition', function(data) {
-		socket.broadcast.emit('position', data);
-	});
 });
 server.listen(app.get('port'), function() {
 	console.log("Express server listening on port " + app.get('port'));

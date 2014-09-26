@@ -3,9 +3,8 @@
     window.geoanno = window.geoanno || {};
     window.geoanno.MapView = Backbone.View.extend({
         events : {
-            "click .info> .ui-grid-c > .ui-block-c button" : "moveToCurrentPosition",
-            "click .info> .ui-grid-c > .ui-block-d button" : "update",
-            "keydown .info> .ui-grid-c > .ui-block-a input" : "keydown",
+            "click .info> .ui-grid-a > .ui-block-a button" : "moveToCurrentPosition",
+            "click .info> .ui-grid-a > .ui-block-b button" : "update",
             "click #memberList tr" : "selectMember",
             "touchstart #memberList tr" : "onTouch",
             "mousedown #memberList tr" : "onTouch",
@@ -29,25 +28,10 @@
             this.memberParams = [];
             this.selfParam = {};
 
-            this.nameText = this.$('#name');
-            this.accountId = this.$('#accountId');
-
             this.searchCurrentPosition(true);
-            this.startPositionUpdate();
 
             this.drowJirodeLine();
             this.getMembers();
-        },
-        
-        startPositionUpdate : function(){
-          var self = this;
-          this.searchCurrentPosition(false, function(){
-            setTimeout(function(){
-              self.deleteAllMarker();
-              self.startPositionUpdate.call(self);
-              self.getMembers();
-            }, 10*1000);
-          });
         },
 
         searchCurrentPosition : function(init, callback) {
@@ -56,8 +40,8 @@
                 navigator.geolocation.getCurrentPosition(function(position) {
                     
                     self.selfParam = {
-                        'accountId' : self.accountId.val(),
-                        'name' : self.nameText.val() || '*',
+                        'accountId' : '*',
+                        'name' : '現在地',
                         'position' : {
                           latitude:position.coords.latitude,
                           longitude:position.coords.longitude
@@ -69,7 +53,7 @@
                     self.drowPositionMarker(self.selfParam);
                     self.updateJirodeElevation(self.selfParam);
                     
-                    $.post('/currentPosition', self.selfParam, 'json');
+                    //$.post('/currentPosition', self.selfParam, 'json');
                     
                     callback && callback();
                 }, function() {
@@ -78,11 +62,8 @@
             }
         },
         
-        keydown : function(){
-          this.searchCurrentPosition(false);
-        },
-        
         update : function(){
+          this.deleteAllMarker();
           this.searchCurrentPosition(true);
           this.getMembers();
         },
@@ -118,15 +99,15 @@
         },
 
         drowPositionMarker : function(param) {
-            this.deleteMarker(param);
+            //this.deleteMarker(param);
             this.createMarker(param);
         },
 
-        deleteMarker : function(param) {
-            var currenctMarker = this.markerStore[param.accountId];
-            currenctMarker && currenctMarker.setMap(null);
-            delete this.markerStore[param.accountId];
-        },
+        // deleteMarker : function(param) {
+            // var currenctMarker = this.markerStore[param.accountId];
+            // currenctMarker && currenctMarker.setMap(null);
+            // delete this.markerStore[param.accountId];
+        // },
         
         deleteAllMarker : function() {
           for(var i in this.markerStore){
@@ -169,7 +150,7 @@
         },
 
         setHeight : function() {
-            var pageHeight = $(window).height() - 155;
+            var pageHeight = $(window).height() - 138;
             this.$('#map').css("height", pageHeight);
         },
 
